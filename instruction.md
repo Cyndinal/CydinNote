@@ -1,0 +1,1 @@
+To run the code, you have to setup postgres or mysql 
