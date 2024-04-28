@@ -1,0 +1,102 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link href="../public/styles/main.css" rel="stylesheet" type="text/css">
+
+
+    <title  >CRUD APP-EJS </title>
+</head>
+<body >
+<main>
+    <p class="lister">List</p>
+    <p><%locals.ITEMS%></p>
+    <%for(let item of ITEMS){%>
+<div id="">
+    <form action="/delete" method="POST" >
+        <input
+                id="delete<%=item.id %>"
+                type="checkbox"
+                onchange={this.form.submit()}
+                name="deleteItem"
+                value="<%=item.id %>"
+                 />
+
+    </form>
+
+    <span id="title<%item.id%>" class="item"><%=item.listitem%></span>
+
+
+      <form  style="display: flex" action="/edit" method="post">
+          <input
+                  type="hidden"
+                     name="newItemId"
+                        value="<%= item.id %>" >
+          <input
+                 id="input<%=item.id%>"
+                 type="text"
+                 name="newItemTitle"
+                 value="<%= item.listitem %>"
+                 autocomplete="off"
+                 autofocus="true"
+                 hidden="true"
+
+
+          />
+
+          <button
+                   class="edit"
+                  id="done<%=item.id%>"
+
+                  type="submit"
+                  hidden="true"
+                  >
+                 ✅
+           </button>
+
+        </form>
+
+
+        <button
+
+                 style="display: flex"
+            id="edit<%=item.id%>"
+                        class="edit"
+                            onclick="handle('<%=item.id%>')" >
+            ✏️
+        </button>
+</div>
+      <%}%>
+
+        <form class="item" style="display: flex" action="/add" method="POST">
+
+        <input type="text" name="list"  />
+
+        <button type="submit" >➕</button>
+    </form>
+</main>
+
+
+<script>
+ const handle = (id)=>{
+     document.getElementById('done' + id).removeAttribute('hidden')
+     document.getElementById('input' + id).removeAttribute('hidden')
+
+     document.getElementById('title' + id).setAttribute('hidden',true)
+     document.getElementById('edit' + id).setAttribute('hidden',true)
+
+ }
+</script>
+
+
+
+
+
+</body>
+</html>
+
