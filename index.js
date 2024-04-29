@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import pg from 'pg';
-import path from 'path';
+
 
 dotenv.config();
 
@@ -30,6 +30,7 @@ const PORT = process.env.PORT || 3000;
 
 
 app.use(bodyParser.urlencoded({ extended: true }))
+
 app.use(express.static('public'))
 
   let ITEMS =[]
@@ -37,9 +38,9 @@ app.use(express.static('public'))
 app.get('/', async (req, res) => {
 
     try{
-        const data =await db.query(`SELECT * FROM Note`)
+        const data =await db.query(`SELECT * FROM Note ORDER BY id ASC;`);
         ITEMS = data.rows
-        res.render('CRUD.ejs',{titleToday:"today",ITEMS:ITEMS});
+        res.render('CRUD.ejs',{titleToday:"THE CYDIN NOTE",ITEMS:ITEMS,total:ITEMS.length});
     }catch (e) {
         console.log(e)
     }
@@ -47,6 +48,9 @@ app.get('/', async (req, res) => {
 
 app.post('/add', async (req, res) => {
    const entry = req.body.list;
+     // if(entry.length > 0){
+     //     document.getElementById('buttoned').removeAttribute('disabled')
+     // }
   await  db.query("INSERT INTO Note(listItem ) VALUES($1)", [entry]);
 
     res.redirect('/')
